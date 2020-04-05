@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import UserItem from './userItem'
+import Search from './search'
+
 
 const gridStyle = {
   display : 'grid',
@@ -8,45 +10,17 @@ const gridStyle = {
 
 }
 
-const User = () => {
+class User extends Component {
 
-   const [error, setError] = useState(null);
-   const [isLoaded, setIsLoaded] = useState(false);
-   const [users, setUsers] = useState([]);
-
-    useEffect(() => {
-    fetch("https://api.github.com/users")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setUsers(result);
-
-        },
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      )
-  }, [users])
-
-  if (error) {
-      return <div>Error: {error.message}</div>;
-    }
-    else if (!isLoaded) {
-      return <div>Loading...</div>;
-    }
-    else {
+  render() {
      return (
        <div style={gridStyle}>
-       {users.map(user => (
+       {this.props.users.map(user => (
            <UserItem key={user.id} user={user} />
        ))}
       </div>
     );
+    }
 }
 
-
-
-}
 export default User
